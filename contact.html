@@ -6,17 +6,52 @@
 <title>Contact | 97 Tools</title>
 <meta name="description" content="97 Toolsへのお問い合わせページです。">
 <style>
-body{max-width:900px;margin:auto;padding:40px 20px;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif;line-height:1.9;color:#333;background:#faf8f6}.card{background:white;padding:32px;border-radius:20px;box-shadow:0 8px 24px rgba(0,0,0,.05)}a{color:#9b6d62}.mail-box{padding:16px 18px;border-radius:14px;background:#faf3ef;color:#6f554e}.nav{margin-top:28px;padding-top:18px;border-top:1px solid #eadfd8;display:flex;flex-wrap:wrap;gap:14px}
+:root{--bg:#f7f3ef;--card:#fff;--text:#2f2a27;--sub:#756b64;--line:#e8ddd5;--accent:#b98172;--accent-dark:#8f5f53;--pink:#df9aa8;--blue:#8eb9d6;--shadow:0 18px 40px rgba(80,55,45,.10)}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic","Yu Gothic UI",sans-serif;line-height:1.9;color:var(--text);background:radial-gradient(circle at 8% 0%,rgba(223,154,168,.22),transparent 30%),radial-gradient(circle at 90% 5%,rgba(142,185,214,.22),transparent 34%),linear-gradient(180deg,#fbf8f5 0%,var(--bg) 100%)}a{color:var(--accent-dark)}.wrap{width:min(900px,calc(100% - 32px));margin:auto;padding:44px 0 56px}.card{position:relative;background:rgba(255,255,255,.86);padding:32px;border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);overflow:hidden}.card:before{content:"";position:absolute;left:0;right:0;top:0;height:6px;background:linear-gradient(90deg,var(--pink),var(--accent),var(--blue))}.label{display:inline-flex;margin-bottom:10px;padding:4px 12px;border-radius:999px;background:#f6eee9;color:var(--accent-dark);font-size:12px;font-weight:700;letter-spacing:.05em}h1{margin:0 0 10px;font-size:clamp(28px,6vw,44px);line-height:1.2}.lead{margin:0 0 22px;color:var(--sub)}.notice{margin:0 0 22px;padding:14px 16px;border:1px solid rgba(185,129,114,.22);border-radius:16px;background:#fff8f4;color:var(--sub);font-size:13px}.form{display:grid;gap:14px}.field{display:grid;gap:6px}.field span{font-size:13px;font-weight:700;color:var(--accent-dark)}input,textarea{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:#fff;color:var(--text);font:inherit;line-height:1.6;outline:none}textarea{min-height:180px;resize:vertical}input:focus,textarea:focus{border-color:rgba(185,129,114,.72);box-shadow:0 0 0 4px rgba(185,129,114,.12)}.hidden-field{display:none}.actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:6px}.submit{border:none;border-radius:999px;background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;padding:12px 22px;font-weight:800;font:inherit;cursor:pointer;box-shadow:0 12px 24px rgba(185,129,114,.22)}.submit:hover{filter:brightness(1.03);transform:translateY(-1px)}.small{color:var(--sub);font-size:12px}.nav{margin-top:28px;padding-top:18px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:14px}.nav a{text-underline-offset:3px}@media(max-width:640px){.wrap{width:min(100% - 24px,900px);padding-top:28px}.card{padding:24px;border-radius:20px}.actions{display:grid}.submit{width:100%}}
 </style>
 </head>
 <body>
-<div class="card">
-<h1>Contact</h1>
-<p>ツールの不具合報告、ご意見、ご要望などがありましたらご連絡ください。</p>
-<p>連絡先は、サイト管理者の公開している連絡手段をご利用ください。</p>
-<div class="mail-box">メールアドレスまたはお問い合わせフォームのURLをここに記載してください。</div>
-<p>スパム対策のため、連絡先は後日Googleフォーム等へ変更する場合があります。</p>
-<div class="nav"><a href="./index.html">Top</a><a href="./about.html">About</a><a href="./privacy.html">Privacy Policy</a></div>
+<div class="wrap">
+  <div class="card">
+    <span class="label">97 Tools</span>
+    <h1>Contact</h1>
+    <p class="lead">ツールの不具合報告、ご意見、ご要望などがありましたら、下記フォームからご連絡ください。</p>
+    <p class="notice">GitHub Pagesは静的サイトのため、送信にはFormSubmitを利用しています。初回のみ、受信先メールアドレス側で確認が必要になる場合があります。</p>
+
+    <form class="form" action="https://formsubmit.co/stormynight1397@gmail.com" method="POST">
+      <input type="hidden" name="_subject" value="97 Tools お問い合わせ">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_next" value="https://97-tools.github.io/contact.html">
+      <input type="text" name="_honey" class="hidden-field" tabindex="-1" autocomplete="off">
+
+      <label class="field">
+        <span>お名前</span>
+        <input type="text" name="name" placeholder="お名前、ハンドルネームなど" required>
+      </label>
+
+      <label class="field">
+        <span>メールアドレス</span>
+        <input type="email" name="email" placeholder="返信が必要な場合は入力してください" required>
+      </label>
+
+      <label class="field">
+        <span>件名</span>
+        <input type="text" name="subject" placeholder="不具合報告、要望など" required>
+      </label>
+
+      <label class="field">
+        <span>お問い合わせ内容</span>
+        <textarea name="message" placeholder="内容を入力してください" required></textarea>
+      </label>
+
+      <div class="actions">
+        <button class="submit" type="submit">送信する</button>
+        <span class="small">送信後、確認画面またはトップページに移動します。</span>
+      </div>
+    </form>
+
+    <div class="nav"><a href="./index.html">Top</a><a href="./about.html">About</a><a href="./privacy.html">Privacy Policy</a></div>
+  </div>
 </div>
 </body>
 </html>
