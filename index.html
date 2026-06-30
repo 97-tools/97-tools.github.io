@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>97 Tools｜創作・TRPG向け便利ツール集</title>
-  <meta name="description" content="創作、TRPG、ログ整理に使えるWebツールをまとめたハブページです。ココフォリアログ整形、立ち絵比較、Fediverseログ整理など。">
+  <meta name="description" content="創作、TRPG、ログ整理に使えるWebツールをまとめたハブページです。ココフォリアログ整形、立ち絵比較、Fediverseログ整理など。BOOTHでダウンロード版・多機能版も配布中。">
   <style>
     :root {
       --bg: #f7f3ef;
@@ -14,6 +14,7 @@
       --line: #e8ddd5;
       --accent: #b98172;
       --accent-dark: #8f5f53;
+      --booth-accent: #e2685a;
       --shadow: 0 18px 40px rgba(80, 55, 45, 0.10);
     }
     * { box-sizing: border-box; }
@@ -37,107 +38,309 @@
     }
     h1 { margin: 18px 0 12px; font-size: clamp(30px, 7vw, 56px); line-height: 1.15; letter-spacing: .03em; }
     .lead { max-width: 680px; margin: 0 auto; color: var(--sub); font-size: 15px; }
+
+    /* ===== BOOTH 共通バナー ===== */
+    .booth-banner {
+      margin-top: 28px; display: flex; align-items: center; justify-content: center; gap: 14px;
+      flex-wrap: wrap; padding: 18px 22px; border-radius: 18px;
+      background: linear-gradient(120deg, rgba(226,104,90,.10), rgba(255,182,200,.14));
+      border: 1px solid rgba(226,104,90,.25);
+    }
+    .booth-banner .booth-text { font-size: 14px; color: var(--text); }
+    .booth-banner .booth-text strong { color: var(--booth-accent); }
+    .booth-banner-link {
+      display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 999px;
+      background: var(--booth-accent); color: #fff; font-weight: 700; font-size: 14px;
+      box-shadow: 0 10px 22px rgba(226,104,90,.30); transition: transform .2s ease, box-shadow .2s ease;
+      white-space: nowrap;
+    }
+    .booth-banner-link:hover { transform: translateY(-2px); box-shadow: 0 14px 28px rgba(226,104,90,.38); }
+
     .tools-header { display: flex; justify-content: space-between; align-items: end; gap: 16px; margin: 34px 0 18px; }
     .tools-header h2 { margin: 0; font-size: 22px; letter-spacing: .04em; }
     .tools-header p { margin: 0; color: var(--sub); font-size: 13px; }
     .tool-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; }
+
     .tool-card {
       position: relative; display: flex; flex-direction: column; min-height: 260px; padding: 24px;
       border: 1px solid rgba(232,221,213,.9); border-radius: 24px; background: rgba(255,255,255,.86);
       box-shadow: var(--shadow); overflow: hidden; transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
     }
     .tool-card::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at top right, rgba(185,129,114,.18), transparent 38%); pointer-events: none; }
-    .tool-card:hover, .tool-card:focus-visible { transform: translateY(-4px); border-color: rgba(185,129,114,.55); box-shadow: 0 24px 52px rgba(80,55,45,.16); outline: none; }
+    .tool-card:hover, .tool-card:focus-within { border-color: rgba(185,129,114,.55); box-shadow: 0 24px 52px rgba(80,55,45,.16); }
     .tool-card-content { position: relative; z-index: 1; display: flex; flex-direction: column; height: 100%; }
-    .tool-icon { width: 48px; height: 48px; display: grid; place-items: center; border-radius: 16px; background: #f1e6df; color: var(--accent-dark); font-size: 24px; margin-bottom: 18px; }
+    .tool-icon { width: 48px; height: 48px; display: grid; place-items: center; border-radius: 16px; background: linear-gradient(135deg,#ffe7ef 0%,#f7efe8 45%,#e7f4ff 100%); box-shadow: inset 0 0 0 1px rgba(255,255,255,.65), 0 8px 18px rgba(185,129,114,.12); color: var(--accent-dark); font-size: 24px; margin-bottom: 18px; }
+    .tool-icon svg { width: 26px; height: 26px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
     .tool-card h3 { margin: 0 0 8px; font-size: 20px; line-height: 1.35; }
     .tool-card p { margin: 0; color: var(--sub); font-size: 14px; }
     .tags { display: flex; flex-wrap: wrap; gap: 7px; margin: 18px 0 20px; }
     .tag { padding: 4px 10px; border-radius: 999px; background: #f6eee9; color: var(--accent-dark); font-size: 12px; }
-    .open-link { margin-top: auto; display: inline-flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; padding-top: 14px; border-top: 1px solid var(--line); color: var(--accent-dark); font-weight: 700; font-size: 14px; }
+    .new-badge{position:absolute;top:14px;right:14px;background:linear-gradient(135deg,#ff9cb7,#f5b77d);color:#fff;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:700;box-shadow:0 8px 16px rgba(255,156,183,.24)}
+
+    .card-actions { margin-top: auto; display: flex; flex-direction: column; gap: 10px; padding-top: 14px; border-top: 1px solid var(--line); }
+    .action-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .open-link { display: inline-flex; align-items: center; gap: 8px; color: var(--accent-dark); font-weight: 700; font-size: 14px; }
+    .detail-toggle {
+      display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--sub);
+      background: rgba(185,129,114,.08); border: 1px solid rgba(185,129,114,.22); border-radius: 999px;
+      padding: 6px 12px; cursor: pointer; font-family: inherit;
+    }
+    .detail-toggle:hover { background: rgba(185,129,114,.16); color: var(--accent-dark); }
+    .detail-toggle .chev { transition: transform .25s ease; }
+    .detail-toggle[aria-expanded="true"] .chev { transform: rotate(180deg); }
+    .booth-mini-link {
+      display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700;
+      color: var(--booth-accent); border: 1px solid rgba(226,104,90,.35); border-radius: 999px;
+      padding: 6px 12px; background: rgba(226,104,90,.06);
+    }
+    .booth-mini-link:hover { background: rgba(226,104,90,.14); }
+
+    /* ===== 詳細パネル（アコーディオン） ===== */
+    .detail-panel {
+      position: relative; z-index: 1; max-height: 0; overflow: hidden; transition: max-height .35s ease;
+    }
+    .detail-panel.is-open { max-height: 900px; }
+    .detail-panel-inner { padding-top: 18px; margin-top: 16px; border-top: 1px dashed var(--line); }
+    .detail-panel-inner p { margin: 0 0 14px; color: var(--sub); font-size: 14px; }
+    .detail-panel-inner h4 { margin: 0 0 10px; font-size: 13px; color: var(--accent-dark); letter-spacing: .04em; }
+
+    .carousel { display: flex; gap: 12px; overflow-x: auto; padding: 4px 2px 12px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+    .carousel img {
+      scroll-snap-align: start; flex: 0 0 auto; height: 190px; width: auto; border-radius: 14px;
+      border: 1px solid var(--line); background: #fff; box-shadow: 0 8px 18px rgba(80,55,45,.10);
+    }
+    .carousel::-webkit-scrollbar { height: 8px; }
+    .carousel::-webkit-scrollbar-thumb { background: rgba(185,129,114,.35); border-radius: 999px; }
+
+    .detail-cta-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
+    .detail-cta {
+      display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; border-radius: 999px;
+      font-size: 13px; font-weight: 700;
+    }
+    .detail-cta.free { background: #f1e6df; color: var(--accent-dark); }
+    .detail-cta.booth { background: var(--booth-accent); color: #fff; box-shadow: 0 8px 18px rgba(226,104,90,.28); }
+
     .info-box { margin-top: 30px; padding: 22px; border: 1px solid var(--line); border-radius: 22px; background: rgba(255,255,255,.68); color: var(--sub); font-size: 14px; }
     .info-box h2 { margin: 0 0 8px; color: var(--text); font-size: 18px; }
+
+    .history-box{margin-top:30px;padding:22px;border:1px solid var(--line);border-radius:22px;background:rgba(255,255,255,.72);box-shadow:0 14px 32px rgba(80,55,45,.07)}
+    .history-box h2{margin:0 0 10px;font-size:18px;display:flex;align-items:center;gap:10px}
+    .history-box h2::before{content:"";width:12px;height:12px;border-radius:50%;background:linear-gradient(135deg,#ffb6c8,#a9d7ff);box-shadow:0 0 14px rgba(255,182,200,.45)}
+    .history-item{padding:14px 0;border-bottom:1px dashed #d8c8c0}
+    .history-item:last-child{border-bottom:none}
+    .history-date{display:block;font-size:12px;font-weight:700;color:var(--accent-dark);margin-bottom:4px}
+
     .footer { margin-top: 38px; padding-top: 20px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 12px 18px; justify-content: center; color: var(--sub); font-size: 13px; }
     .footer a { color: var(--accent-dark); text-decoration: underline; text-underline-offset: 3px; }
+
     @media (max-width: 640px) {
       .page { width: min(100% - 24px, 1080px); padding-top: 28px; }
       .hero { padding-top: 28px; }
       .tools-header { display: block; }
       .tools-header p { margin-top: 4px; }
       .tool-card { min-height: 230px; padding: 20px; border-radius: 20px; }
+      .booth-banner { flex-direction: column; text-align: center; }
     }
-  
-.history-box{margin-top:30px;padding:22px;border:1px solid var(--line);border-radius:22px;background:rgba(255,255,255,.72);box-shadow:0 14px 32px rgba(80,55,45,.07)}
-.history-box h2{margin:0 0 10px;font-size:18px;display:flex;align-items:center;gap:10px}
-.history-box h2::before{content:"";width:12px;height:12px;border-radius:50%;background:linear-gradient(135deg,#ffb6c8,#a9d7ff);box-shadow:0 0 14px rgba(255,182,200,.45)}
-.history-item{padding:14px 0;border-bottom:1px dashed #d8c8c0}
-.history-item:last-child{border-bottom:none}
-.history-date{display:block;font-size:12px;font-weight:700;color:var(--accent-dark);margin-bottom:4px}
-.tool-icon{background:linear-gradient(135deg,#ffe7ef 0%,#f7efe8 45%,#e7f4ff 100%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.65),0 8px 18px rgba(185,129,114,.12)}
-.tool-icon svg{width:26px;height:26px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.new-badge{position:absolute;top:14px;right:14px;background:linear-gradient(135deg,#ff9cb7,#f5b77d);color:#fff;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:700;box-shadow:0 8px 16px rgba(255,156,183,.24)}
-.tool-card:hover,.tool-card:focus-visible{box-shadow:0 24px 52px rgba(80,55,45,.16),0 0 0 1px rgba(255,175,195,.30)}
-
-</style>
+  </style>
 
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5289275767278439"
      crossorigin="anonymous"></script>
 
-  
 </head>
 <body>
   <main class="page">
     <section class="hero">
       <div class="site-label">97 Tools</div>
       <h1>創作とTRPGのための<br>便利ツール集</h1>
-      <p class="lead">ログ整理、立ち絵比較、Fediverse投稿の保存・閲覧など、創作活動やTRPGまわりの作業を少し楽にするWebツールをまとめています。</p>
+      <p class="lead">ログ編集、立ち絵比較、Fediverse投稿の保存・閲覧など、創作活動やTRPGまわりの作業を少し楽にするWebツールをまとめています。</p>
+
     </section>
+
     <section aria-labelledby="tools-title">
       <div class="tools-header">
         <div>
           <h2 id="tools-title">公開中のツール</h2>
-          <p>クリックすると各ツールへ移動します。</p>
+          <p>「詳しく見る」でスクリーンショットと説明を確認できます。</p>
         </div>
       </div>
+
       <div class="tool-grid">
-        <a class="tool-card" href="https://97-tools.github.io/cocofolia-log-editor/">
-          <div class="tool-card-content"><div class="tool-icon"><svg viewBox="0 0 24 24"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6h.01"/><path d="M3 12h.01"/><path d="M3 18h.01"/></svg></div><h3>ココフォリアログ整形ツール</h3><p>ココフォリアのログを、読みやすく整理・整形するためのツールです。</p><div class="tags"><span class="tag">TRPG</span><span class="tag">ログ整理</span><span class="tag">HTML出力</span></div><div class="open-link"><span>ツールを開く</span><span>→</span></div></div>
-        </a>
-        <a class="tool-card" href="https://97-tools.github.io/tachie-lineup/">
-          <div class="tool-card-content"><div class="tool-icon"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6"/><path d="M23 11h-6"/></svg></div><span class="new-badge">NEW</span><h3>立ち絵身長比較ツール</h3><p>複数キャラクターの立ち絵を並べて、身長や見た目のバランスを確認できます。</p><div class="tags"><span class="tag">立ち絵</span><span class="tag">キャラ管理</span><span class="tag">比較</span></div><div class="open-link"><span>ツールを開く</span><span>→</span></div></div>
-        </a>
-        <a class="tool-card" href="https://97-tools.github.io/fediverse-log-tool/">
-          <div class="tool-card-content"><div class="tool-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><h3>Fediverseログ整理ツール</h3><p>Fediverseの投稿ログを整理し、あとから見返しやすくするためのツールです。</p><div class="tags"><span class="tag">Fediverse</span><span class="tag">ログ保存</span><span class="tag">検索</span></div><div class="open-link"><span>ツールを開く</span><span>→</span></div></div>
-        </a>
+
+        <!-- ============ ツール1：ココフォリアログ整形ツール ============ -->
+        <div class="tool-card">
+          <div class="tool-card-content">
+            <div class="tool-icon"><svg viewBox="0 0 24 24"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6h.01"/><path d="M3 12h.01"/><path d="M3 18h.01"/></svg></div>
+            <h3>ココフォリアログ整形ツール</h3>
+            <p>ココフォリアのログを、読みやすく整理・整形するためのツールです。</p>
+            <div class="tags"><span class="tag">TRPG</span><span class="tag">ログ整理</span><span class="tag">HTML出力</span></div>
+
+            <div class="card-actions">
+              <div class="action-row">
+                <a class="open-link" href="https://97-tools.github.io/cocofolia-log-editor/" target="_blank" rel="noopener"><span>ツールを開く</span><span>→</span></a>
+                <button class="detail-toggle" type="button" aria-expanded="false" aria-controls="detail-cocofolia">
+                  <span>詳しく見る</span><span class="chev">▾</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="detail-panel" id="detail-cocofolia">
+              <div class="detail-panel-inner">
+                <p>ココフォリアから出力したセッションログを読み込むだけで、簡単に発言の編集、挿入や入れ替えなどができます。<br>発言者ごとの色分けや、条件に応じた絞りこみができるので、誰でも見たままわかりやすく編集できます。長いセッションのログでも簡単です。<br>編集したログはHTML/テキストとして書き出せます。
+      <br>  <br>        
+ 仕様はWeb版とBOOTH版で同一です。</p>
+                <h4>スクリーンショット</h4>
+                <div class="carousel">
+                  <img src="http://mame.wew.jp/wp/wp-content/uploads/2026/06/IMG_2506.png" alt="ココフォリアログ整形ツール スクリーンショット1" loading="lazy">
+                  <img src="http://mame.wew.jp/wp/wp-content/uploads/2026/06/IMG_2507.jpeg" alt="ココフォリアログ整形ツール スクリーンショット2" loading="lazy">
+                </div>
+                
+                <div class="detail-cta-row">
+                  <a class="detail-cta free" href="https://97-tools.github.io/cocofolia-log-editor/" target="_blank" rel="noopener">web版を開く</a>
+                  
+                  <a class="detail-cta booth" href="https://rustyschop.booth.pm/items/8371101" target="_blank" rel="noopener">BOOTH版を開く</a>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
+        <!-- ============ ツール2：立ち絵身長比較ツール ============ -->
+        <div class="tool-card">
+          <div class="tool-card-content">
+            <div class="tool-icon"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6"/><path d="M23 11h-6"/></svg></div>
+            <span class="new-badge">NEW</span>
+            <h3>立ち絵身長比較ツール</h3>
+            <p>複数キャラクターの立ち絵を並べて、身長や見た目のバランスを確認できます。</p>
+            <div class="tags"><span class="tag">立ち絵</span><span class="tag">キャラ管理</span><span class="tag">比較</span></div>
+
+            <div class="card-actions">
+              <div class="action-row">
+                <a class="open-link" href="https://97-tools.github.io/tachie-lineup/" target="_blank" rel="noopener"><span>ツールを開く</span><span>→</span></a>
+                <button class="detail-toggle" type="button" aria-expanded="false" aria-controls="detail-tachie">
+                  <span>詳しく見る</span><span class="chev">▾</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="detail-panel" id="detail-tachie">
+              <div class="detail-panel-inner">
+                <p>立ち絵画像をアップロードして身長の基準線で並べるだけで、キャラクター間の体格差を一目で比較できます。<br>保存・読み込みや画像書き出し、高さや拡大率の微調整にも対応しています。<br><br>BOOTH版では、6種類のデザインテーマとタイトル入出力、途中保存機能が使える拡張版を配布しています。</p>
+                <h4>スクリーンショット</h4>
+                <div class="carousel">
+                  <img src="http://mame.wew.jp/wp/wp-content/uploads/2026/06/IMG_2473.jpeg" alt="立ち絵身長比較ツール スクリーンショット1" loading="lazy">
+                  <img src="http://mame.wew.jp/wp/wp-content/uploads/2026/06/IMG_2474.jpeg" alt="立ち絵身長比較ツール スクリーンショット2" loading="lazy">
+                  <img src="http://mame.wew.jp/wp/wp-content/uploads/2026/06/IMG_2475.jpeg" alt="立ち絵身長比較ツール スクリーンショット3" loading="lazy">
+                  <img src="http://mame.wew.jp/wp/wp-content/uploads/2026/06/IMG_2476.jpeg" alt="立ち絵身長比較ツール スクリーンショット4" loading="lazy">
+                </div>
+                
+                <div class="detail-cta-row">
+                  <a class="detail-cta free" href="https://97-tools.github.io/tachie-lineup/" target="_blank" rel="noopener">Web版を開く</a>
+                  <a class="detail-cta booth" href="https://rustyschop.booth.pm/items/8553734" target="_blank" rel="noopener">BOOTH版を開く</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============ ツール3：Fediverseログ整理ツール ============ -->
+        <div class="tool-card">
+          <div class="tool-card-content">
+            <div class="tool-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+            <h3>Fediverseログ整理ツール</h3>
+            <p>Fediverseの投稿ログを整理し、あとから見返しやすくするためのツールです。</p>
+            <div class="tags"><span class="tag">Fediverse</span><span class="tag">ログ保存</span><span class="tag">検索</span></div>
+
+            <div class="card-actions">
+              <div class="action-row">
+                <a class="open-link" href="https://97-tools.github.io/fediverse-log-tool/" target="_blank" rel="noopener"><span>ツールを開く</span><span>→</span></a>
+                <button class="detail-toggle" type="button" aria-expanded="false" aria-controls="detail-fediverse">
+                  <span>詳しく見る</span><span class="chev">▾</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="detail-panel" id="detail-fediverse">
+              <div class="detail-panel-inner">
+                <p>Xと似たSNSである、フェディバースから保存したJSON形式の投稿ログを、キーワードや日付で絞り込んで出力できるツールです。<br>長期間ログが溜まっても、目的の投稿を探しやすくなります。<br><br>特定の話題の呟きを振り返ったり、まとめたふせを作成する際などにどうぞ。<br><br>仕様はWeb版とBOOTH版で同一です。
+                </p>
+                <h4>スクリーンショット</h4>
+                <div class="carousel">
+                  <img src="http://mame.wew.jp/wp/wp-content/uploads/2026/06/IMG_2508.png" alt="Fediverseログ整理ツール スクリーンショット1" loading="lazy">
+                  <img src="http://mame.wew.jp/wp/wp-content/uploads/2026/06/IMG_2509.jpeg" alt="Fediverseログ整理ツール スクリーンショット2" loading="lazy">
+                </div>
+                
+                
+                <div class="detail-cta-row">
+                  <a class="detail-cta free" href="https://97-tools.github.io/fediverse-log-tool/" target="_blank" rel="noopener">Web版を開く</a>
+                   
+                  <a class="detail-cta booth" href="https://rustyschop.booth.pm/items/8371398" target="_blank" rel="noopener">BOOTH版を開く</a>
+                  
+                  
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
-    
-<section class="history-box">
-<h2>更新履歴</h2>
 
-<div class="history-item">
-<span class="history-date">2026.06.23</span>
-立ち絵比較メーカー公開
-</div>
-
-<div class="history-item">
-<span class="history-date">2026.06.23</span>
-97 Tools トップページ公開
-</div>
-
-</section>
-
-<section class="info-box">
-      <h2>このサイトについて</h2>
-      <p>97 Tools は、創作・TRPG・個人サイト運営まわりの作業を補助する個人制作のWebツール置き場です。今後も用途別にツールを追加していく予定です。</p>
+    <section class="history-box">
+      <h2>更新履歴</h2>
+      <div class="history-item">
+        <span class="history-date">2026.06.30</span>
+        各ツールに詳細説明・スクリーンショット・BOOTHリンクを追加
+      </div>
+      <div class="history-item">
+        <span class="history-date">2026.06.23</span>
+        立ち絵比較メーカー公開
+      </div>
+      <div class="history-item">
+        <span class="history-date">2026.06.23</span>
+        97 Tools トップページ公開
+      </div>
     </section>
+
+    <section class="info-box">
+      <h2>このサイトについて</h2>
+      <p>97 Tools は、創作・TRPG・個人サイト運営まわりの作業を補助する個人制作のWebツール置き場です。各ツールはブラウザですぐ使える無料版に加え、BOOTHにてローカル保存版や多機能な有料版も配布しています。今後も用途別にツールを追加していく予定です。</p>
+    </section>
+
+
+
+      <div class="booth-banner">
+        <span class="booth-text">ローカル版（PCにダウンロードして使うもの）・有料の多機能版はBOOTHで配布中です</span>
+        <a class="booth-banner-link" href="https://rustyschop.booth.pm" target="_blank" rel="noopener">
+          BOOTHショップを見る →
+        </a>
+      </div>
+
+
     <footer class="footer">
       <span>© 97 Tools</span>
       <a href="./index.html">Top</a>
       <a href="./about.html">About</a>
       <a href="./contact.html">Contact</a>
       <a href="./privacy.html">Privacy Policy</a>
+      <a href="https://rustyschop.booth.pm" target="_blank" rel="noopener">BOOTH</a>
     </footer>
   </main>
+
+  <script>
+    document.querySelectorAll('.detail-toggle').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var panel = document.getElementById(btn.getAttribute('aria-controls'));
+        var isOpen = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', String(!isOpen));
+        panel.classList.toggle('is-open', !isOpen);
+        btn.querySelector('span:first-child').textContent = isOpen ? '詳しく見る' : '閉じる';
+      });
+    });
+  </script>
 </body>
 </html>
