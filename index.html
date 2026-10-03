@@ -152,7 +152,7 @@
     <section class="hero">
       <div class="site-label">97 Tools</div>
       <h1>創作とTRPGのための<br>便利ツール集</h1>
-      <p class="lead">ログ編集、立ち絵比較、Fediverse投稿の保存・閲覧など、創作活動やTRPGまわりの作業を少し楽にするWebツールをまとめています。</p>
+      <p class="lead">ログ編集、立ち絵比較、Fediverse投稿の保存・閲覧など、創作活動やTRPGまわりの「少し面倒」を減らすために個人で制作しているWebツール集です。登録不要で、ブラウザからすぐ使えるツールを公開しています。</p>
 
     </section>
 
@@ -208,7 +208,31 @@
 
 
 
-        <!-- ============ ツール2：立ち絵身長比較ツール ============ -->
+        <!-- ============ ツール2：ココフォリアログ形式修復ツール ============ -->
+        <div class="tool-card">
+          <div class="tool-card-content">
+            <div class="tool-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M8 9h8"/><path d="M8 13h5"/><path d="M8 17h8"/></svg></div>
+            <span class="new-badge">NEW</span>
+            <h3>ココフォリアログ形式修復ツール</h3>
+            <p>追記・編集などで形式が崩れたココフォリアのHTMLログを、再利用しやすい形に整え直します。</p>
+            <div class="tags"><span class="tag">TRPG</span><span class="tag">ログ修復</span><span class="tag">HTML</span></div>
+            <div class="card-actions">
+              <div class="action-row">
+                <a class="open-link" href="./ccfolia-log-repair.html"><span>ツールを開く</span><span>→</span></a>
+                <button class="detail-toggle" type="button" aria-expanded="false" aria-controls="detail-repair"><span>詳しく見る</span><span class="chev">▾</span></button>
+              </div>
+            </div>
+            <div class="detail-panel" id="detail-repair">
+              <div class="detail-panel-inner">
+                <p>HTMLへ追記・編集したことで構造が変わったログを読み込み、発言者と本文、タブに相当する分類を整理してHTMLとして書き出します。ココフォリアのログ形式を前提にした別の編集・整形ツールへ渡す前の整理にも使えます。ファイルの内容はサーバーへ送信せず、ブラウザ内で処理します。</p>
+                <p><strong>「ココフォリアログ編集・整形ツール」との違い：</strong>既存ツールは発言内容そのものの編集・追加・削除向け、このツールはログのHTML構造や分類を整え直す用途向けです。</p>
+                <div class="detail-cta-row"><a class="detail-cta free" href="./ccfolia-log-repair.html">ツールを開く</a></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============ ツール3：立ち絵身長比較ツール ============ -->
         <div class="tool-card">
           <div class="tool-card-content">
             <div class="tool-icon"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6"/><path d="M23 11h-6"/></svg></div>
@@ -246,7 +270,7 @@
           </div>
         </div>
 
-        <!-- ============ ツール3：Fediverseログ整理ツール ============ -->
+        <!-- ============ ツール4：Fediverseログ整理ツール ============ -->
         <div class="tool-card">
           <div class="tool-card-content">
             <div class="tool-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
@@ -290,7 +314,17 @@
       </div>
     </section>
 
+    <section class="info-box">
+      <h2>どのツールを使えばいい？</h2>
+      <p><strong>ココフォリアの発言を編集したい</strong>場合は「ココフォリアログ編集・整形ツール」、<strong>編集などで崩れたログの形式を整え直したい</strong>場合は「ココフォリアログ形式修復ツール」が向いています。キャラクター同士の身長差を画像で確認したい場合は「立ち絵身長比較ツール」、Misskey・Mastodon系の投稿ログを検索・抽出したい場合は「Fediverseログ整理ツール」を利用してください。</p>
+      <p>アップロードしたログや立ち絵をブラウザ内で処理するツールについては、各ツール上にもデータの扱いを記載しています。大切な元ファイルは残したまま、コピーしたデータでの利用をおすすめします。</p>
+    </section>
+
     <section class="history-box">
+      <div class="history-item">
+        <span class="history-date">2026.10.03</span>
+        ココフォリアログ形式修復ツールを追加。ツールの用途・使い分け説明を拡充
+      </div>
       <h2>更新履歴</h2>
       <div class="history-item">
         <span class="history-date">2026.06.30</span>
