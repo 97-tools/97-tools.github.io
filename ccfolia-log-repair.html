@@ -173,8 +173,14 @@
 </head>
 <body>
 <div class="wrap">
-  <h1>CCFOLIAログ変換ツール</h1>
-  <p class="lead">旧形式（&lt;dl&gt;&lt;dt&gt;&lt;dd&gt;構造)のCCFOLIAログを、サイトの[ccfolia_log]ショートコードで読める形式に変換します。サーバーには送信されず、この画面内(ブラウザ)だけで処理されます。</p>
+  <nav class="nav"><a href="./index.html">← 97 Tools トップへ</a><a href="./about.html">About</a><a href="./contact.html">Contact</a></nav>
+  <div class="hero">
+    <div class="hero-card">
+      <p class="tool-kicker">CCFOLIA LOG REPAIR</p>
+      <h1>ココフォリアログ形式修復ツール</h1>
+      <p class="lead">HTMLへの追記・編集などで構造が変わったココフォリアのログを読み込み、発言者・本文・タブに相当する分類を整理して、ココフォリアから出力したログに近い形へ整え直します。ファイルはサーバーへ送信されず、このブラウザ内だけで処理されます。</p>
+    </div>
+  </div>
 
   <div class="step">
     <div class="step-title"><span class="step-num">1</span>修復したいログHTMLを選択</div>
@@ -196,6 +202,15 @@
     <div class="status" id="convertStatus"></div>
     <div class="preview hidden" id="previewBox"></div>
   </div>
+
+  <section class="info">
+    <h2>こんな使い方を想定しています</h2>
+    <p>ココフォリアのログをWordなどで見たまま共同編集し、文章の修正や発言の追記をしたあと、もう一度ココフォリアのログを前提とするツールで扱いたい場合に使えます。</p>
+    <p>たとえば、発言を <code>[タブ名] 名前 : 本文</code> のように「タブ名・名前・本文」の対応が分かる形を保ったまま編集します。既存の名前・タブ・本文を書き換えたり、そのまとまりをコピー＆ペーストして発言を追加したりしたログを、このツールで読み込んでHTML構造へ整え直す想定です。</p>
+    <p>Wordなどで複数人が読みやすい状態のままログを確認・追記し、編集が終わった段階で再び機械的に扱いやすい形式へ戻したいときに便利です。</p>
+    <h2>編集するときの注意</h2>
+    <p>このツールは、読み込んだHTML内の <code>&lt;dl&gt;</code>、<code>&lt;dt&gt;</code>、<code>&lt;dd&gt;</code> と分類情報をもとに発言を認識します。そのため、共同編集するときも「どこがタブ名・名前・本文か」を判別できる構造は残してください。元ファイルは別に保管し、変換後の内容もプレビューで確認してください。</p>
+  </section>
 </div>
 
 <script>
