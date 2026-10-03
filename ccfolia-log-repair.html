@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ココフォリアログ形式修復ツール | 97 Tools</title>\n<meta name="description" content="追記・編集などで形式が崩れたココフォリアのHTMLログを、再利用しやすいHTMLへ整え直す無料Webツールです。ファイルはブラウザ内で処理します。">
+<title>ココフォリアログ形式修復ツール | 97 Tools</title>
+<meta name="description" content="追記・編集などで形式が崩れたココフォリアのHTMLログを、再利用しやすいHTMLへ整え直す無料Webツールです。ファイルはブラウザ内で処理します。">
 <style>
   :root {
     --bg: #faf7f5;
@@ -23,7 +24,18 @@
     line-height: 1.7;
     padding: 24px 16px 80px;
   }
-  .wrap { max-width: 720px; margin: 0 auto; }\n  .nav { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:20px; font-size:13px; }\n  .nav a { color:var(--accent); }\n  .info { background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:18px; margin-top:22px; font-size:13px; }\n  .info h2 { font-size:16px; margin:0 0 8px; }\n  .info h3 { font-size:14px; margin:18px 0 6px; }\n  .info p, .info ul { margin:6px 0; }
+  .wrap { width: min(100% - 32px, 760px); margin: 0 auto; }
+  .hero { padding: 20px 0 8px; }
+  .hero-card { background: rgba(255,255,255,.74); border:1px solid var(--line); border-radius:24px; padding:24px; box-shadow:0 18px 42px rgba(90,60,45,.08); }
+  .step, .info { width:100%; box-shadow:0 12px 28px rgba(90,60,45,.07); }
+  input, button { max-width:100%; }
+  @media(max-width:600px){ body{padding:16px 0 56px}.wrap{width:min(100% - 24px,760px)}.hero-card,.step,.info{border-radius:20px}.step{padding:18px}.ghost-btn{margin-left:0!important;margin-top:8px} }
+  .nav { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:20px; font-size:13px; }
+  .nav a { color:var(--accent); }
+  .info { background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:18px; margin-top:22px; font-size:13px; }
+  .info h2 { font-size:16px; margin:0 0 8px; }
+  .info h3 { font-size:14px; margin:18px 0 6px; }
+  .info p, .info ul { margin:6px 0; }
   h1 {
     font-size: 20px;
     margin: 0 0 4px;
@@ -338,23 +350,35 @@
     var title = originalFileName;
 
     return (
-      '<!doctype html>\n' +
-      '<html lang="ja">\n' +
-      '<head>\n' +
-      '<meta charset="utf-8">\n' +
-      '<title>' + title + '</title>\n' +
-      '</head>\n' +
-      '<body>\n' +
-      bodyLines.join('\n') + '\n' +
-      '</body>\n' +
-      '</html>\n'
+      '<!doctype html>
+' +
+      '<html lang="ja">
+' +
+      '<head>
+' +
+      '<meta charset="utf-8">
+' +
+      '<title>' + title + '</title>
+' +
+      '</head>
+' +
+      '<body>
+' +
+      bodyLines.join('
+') + '
+' +
+      '</body>
+' +
+      '</html>
+'
     );
   }
 
   previewBtn.addEventListener('click', function () {
     if (!parsedLines) return;
     var html = buildConvertedHtml();
-    previewBox.textContent = html.slice(0, 4000) + (html.length > 4000 ? '\n...(以下省略)' : '');
+    previewBox.textContent = html.slice(0, 4000) + (html.length > 4000 ? '
+...(以下省略)' : '');
     previewBox.classList.toggle('hidden');
   });
 
