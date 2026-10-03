@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ココフォリアログ形式修復ツール | 97 Tools</title>\n<meta name="description" content="追記・編集などで形式が崩れたココフォリアのHTMLログを、再利用しやすいHTMLへ整え直す無料Webツールです。ファイルはブラウザ内で処理します。">
+<style>
+  :root {
+    --bg: #faf7f5;
+    --panel: #ffffff;
+    --ink: #2b2622;
+    --sub: #8a7f78;
+    --line: #e7ddd6;
+    --accent: #b85c4a;
+    --accent-soft: #f2e4de;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Hiragino Sans", "Yu Gothic", system-ui, sans-serif;
+    line-height: 1.7;
+    padding: 24px 16px 80px;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; }\n  .nav { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:20px; font-size:13px; }\n  .nav a { color:var(--accent); }\n  .info { background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:18px; margin-top:22px; font-size:13px; }\n  .info h2 { font-size:16px; margin:0 0 8px; }\n  .info h3 { font-size:14px; margin:18px 0 6px; }\n  .info p, .info ul { margin:6px 0; }
+  h1 {
+    font-size: 20px;
+    margin: 0 0 4px;
+    letter-spacing: 0.02em;
+  }
+  .lead {
+    color: var(--sub);
+    font-size: 13px;
+    margin: 0 0 28px;
+  }
+  .step {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 16px;
+  }
+  .step-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 12px;
+  }
+  .step-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 12px;
+    flex: none;
+  }
+  input[type="file"] {
+    width: 100%;
+    font-size: 13px;
+    padding: 10px;
+    border: 1px dashed var(--line);
+    border-radius: 10px;
+    background: #fffdfc;
+  }
+  .tab-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 13px;
+  }
+  .tab-row:last-child { border-bottom: none; }
+  .tab-key {
+    font-family: monospace;
+    background: var(--accent-soft);
+    padding: 3px 8px;
+    border-radius: 6px;
+    color: var(--accent);
+    flex: none;
+    min-width: 96px;
+    word-break: break-all;
+  }
+  .tab-row input[type="text"] {
+    flex: 1;
+    padding: 7px 10px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--ink);
+  }
+  .tab-count {
+    color: var(--sub);
+    font-size: 11px;
+    flex: none;
+  }
+  button {
+    appearance: none;
+    border: none;
+    border-radius: 999px;
+    padding: 11px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    background: var(--accent);
+    color: #fff;
+    font-weight: bold;
+  }
+  button:disabled {
+    background: #d8cfc9;
+    cursor: not-allowed;
+  }
+  .ghost-btn {
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    font-weight: normal;
+    padding: 9px 16px;
+    font-size: 13px;
+  }
+  .status {
+    font-size: 12px;
+    color: var(--sub);
+    margin-top: 10px;
+  }
+  .status.ok { color: #4c7a52; }
+  .status.err { color: var(--accent); }
+  .hidden { display: none !important; }
+  .summary-box {
+    background: var(--accent-soft);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 12px;
+    color: var(--ink);
+    margin-bottom: 14px;
+  }
+  .preview {
+    max-height: 180px;
+    overflow: auto;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 12px;
+    background: #fffdfc;
+    white-space: pre-wrap;
+    word-break: break-word;
+    color: var(--sub);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>CCFOLIAログ変換ツール</h1>
+  <p class="lead">旧形式（&lt;dl&gt;&lt;dt&gt;&lt;dd&gt;構造)のCCFOLIAログを、サイトの[ccfolia_log]ショートコードで読める形式に変換します。サーバーには送信されず、この画面内(ブラウザ)だけで処理されます。</p>
+
+  <div class="step">
+    <div class="step-title"><span class="step-num">1</span>修復したいログHTMLを選択</div>
+    <input type="file" id="fileInput" accept=".html,.htm">
+    <div class="status" id="loadStatus"></div>
+  </div>
+
+  <div class="step hidden" id="tabStep">
+    <div class="step-title"><span class="step-num">2</span>タブ名を確認・調整</div>
+    <p class="lead" style="margin-bottom:12px;">検出された分類ごとに、表示したいタブ名を入力してください(「main」はそのままでOKです)。</p>
+    <div id="tabList"></div>
+  </div>
+
+  <div class="step hidden" id="convertStep">
+    <div class="step-title"><span class="step-num">3</span>変換してダウンロード</div>
+    <div class="summary-box" id="summaryBox"></div>
+    <button id="convertBtn">変換してダウンロード</button>
+    <button class="ghost-btn" id="previewBtn" style="margin-left:8px;">中身をプレビュー</button>
+    <div class="status" id="convertStatus"></div>
+    <div class="preview hidden" id="previewBox"></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var fileInput = document.getElementById('fileInput');
+  var loadStatus = document.getElementById('loadStatus');
+  var tabStep = document.getElementById('tabStep');
+  var tabList = document.getElementById('tabList');
+  var convertStep = document.getElementById('convertStep');
+  var summaryBox = document.getElementById('summaryBox');
+  var convertBtn = document.getElementById('convertBtn');
+  var convertStatus = document.getElementById('convertStatus');
+  var previewBtn = document.getElementById('previewBtn');
+  var previewBox = document.getElementById('previewBox');
+
+  var parsedLines = null; // [{tabKey, dt, ddHtml}]
+  var originalFileName = 'converted-log';
+
+  var DEFAULT_LABELS = {
+    'main': 'main',
+    'zatsudan': '雑談',
+    'himitsu': '秘話',
+    'secret': '秘話',
+    'system': 'システム'
+  };
+
+  function cleanClassToken(cls) {
+    var tokens = String(cls || '').trim().split(/\s+/).filter(function (t) {
+      return t && !/^pc_\d+$/i.test(t);
+    });
+    return tokens.length ? tokens[0] : 'main';
+  }
+
+  fileInput.addEventListener('change', function () {
+    var file = fileInput.files[0];
+    if (!file) return;
+
+    originalFileName = file.name.replace(/\.(html?|HTML?)$/, '');
+
+    var reader = new FileReader();
+    reader.onload = function () {
+      try {
+        handleLoadedHtml(reader.result);
+      } catch (e) {
+        loadStatus.textContent = '読み込みに失敗しました: ' + e.message;
+        loadStatus.className = 'status err';
+      }
+    };
+    reader.onerror = function () {
+      loadStatus.textContent = 'ファイルの読み込みに失敗しました。';
+      loadStatus.className = 'status err';
+    };
+    reader.readAsText(file, 'utf-8');
+  });
+
+  function handleLoadedHtml(html) {
+    var doc = new DOMParser().parseFromString(html, 'text/html');
+    var dls = Array.from(doc.querySelectorAll('dl'));
+
+    if (!dls.length) {
+      loadStatus.textContent = '<dl>要素が見つかりませんでした。想定と違う形式かもしれません。';
+      loadStatus.className = 'status err';
+      tabStep.classList.add('hidden');
+      convertStep.classList.add('hidden');
+      return;
+    }
+
+    parsedLines = dls.map(function (dl) {
+      var dt = dl.querySelector('dt');
+      var dd = dl.querySelector('dd');
+      var tabKey = cleanClassToken(dl.getAttribute('class'));
+
+      return {
+        tabKey: tabKey,
+        dtText: dt ? dt.textContent.trim() : '',
+        ddHtml: dd ? dd.innerHTML.trim() : ''
+      };
+    }).filter(function (line) {
+      return line.dtText || line.ddHtml;
+    });
+
+    loadStatus.textContent = parsedLines.length + '行を検出しました。';
+    loadStatus.className = 'status ok';
+
+    renderTabList();
+  }
+
+  function renderTabList() {
+    var counts = {};
+    parsedLines.forEach(function (line) {
+      counts[line.tabKey] = (counts[line.tabKey] || 0) + 1;
+    });
+
+    var keys = Object.keys(counts).sort();
+
+    tabList.innerHTML = '';
+
+    keys.forEach(function (key) {
+      var row = document.createElement('div');
+      row.className = 'tab-row';
+
+      var keyEl = document.createElement('span');
+      keyEl.className = 'tab-key';
+      keyEl.textContent = key;
+
+      var input = document.createElement('input');
+      input.type = 'text';
+      input.value = DEFAULT_LABELS[key] || key;
+      input.dataset.tabKey = key;
+
+      var countEl = document.createElement('span');
+      countEl.className = 'tab-count';
+      countEl.textContent = counts[key] + '件';
+
+      row.appendChild(keyEl);
+      row.appendChild(input);
+      row.appendChild(countEl);
+      tabList.appendChild(row);
+    });
+
+    tabStep.classList.remove('hidden');
+    convertStep.classList.remove('hidden');
+
+    summaryBox.textContent =
+      '合計 ' + parsedLines.length + '行 / ' + keys.length + '種類のタブを検出しました。';
+
+    convertStatus.textContent = '';
+    previewBox.classList.add('hidden');
+  }
+
+  function getLabelMap() {
+    var map = {};
+    tabList.querySelectorAll('input[type="text"]').forEach(function (input) {
+      map[input.dataset.tabKey] = input.value.trim() || input.dataset.tabKey;
+    });
+    return map;
+  }
+
+  function buildConvertedHtml() {
+    var labelMap = getLabelMap();
+
+    var bodyLines = parsedLines.map(function (line) {
+      var label = labelMap[line.tabKey] || line.tabKey;
+      var esc = function (s) {
+        return String(s)
+          .split('&').join('&amp;')
+          .split('<').join('&lt;')
+          .split('>').join('&gt;')
+          .split('"').join('&quot;');
+      };
+
+      var speaker = line.dtText ? '<strong>' + esc(line.dtText) + '</strong>：' : '';
+
+      return '<p data-tab-label="' + esc(label) + '">' + speaker + line.ddHtml + '</p>';
+    });
+
+    var title = originalFileName;
+
+    return (
+      '<!doctype html>\n' +
+      '<html lang="ja">\n' +
+      '<head>\n' +
+      '<meta charset="utf-8">\n' +
+      '<title>' + title + '</title>\n' +
+      '</head>\n' +
+      '<body>\n' +
+      bodyLines.join('\n') + '\n' +
+      '</body>\n' +
+      '</html>\n'
+    );
+  }
+
+  previewBtn.addEventListener('click', function () {
+    if (!parsedLines) return;
+    var html = buildConvertedHtml();
+    previewBox.textContent = html.slice(0, 4000) + (html.length > 4000 ? '\n...(以下省略)' : '');
+    previewBox.classList.toggle('hidden');
+  });
+
+  convertBtn.addEventListener('click', function () {
+    if (!parsedLines) return;
+
+    var html = buildConvertedHtml();
+    var blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = originalFileName + '-converted.html';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+
+    convertStatus.textContent = '変換したHTMLをダウンロードしました。元ファイルは残したまま、必要なツールで読み込んで確認してください。';
+    convertStatus.className = 'status ok';
+  });
+})();
+</script>
+</body>
+</html>
